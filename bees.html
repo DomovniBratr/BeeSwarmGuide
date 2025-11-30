@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bee Database - BSS Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .bee-card { transition: all 0.3s ease; }
+        .bee-card:hover { transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .modal { display: none; }
+        .modal.active { display: flex; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                        <span class="text-xl">🐝</span>
+                    </div>
+                    <span class="font-bold text-xl text-amber-900 hidden sm:block">BSS Guide</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🏠 Home</a>
+                    <a href="bees.html" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-100 text-amber-900 font-medium">🐝 Bees</a>
+                    <a href="fields.html" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🗺️ Fields</a>
+                    <a href="quests.html" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">📜 Quests</a>
+                    <a href="codes.html" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🎁 Codes</a>
+                    <a href="chat.html" class="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🤖 AI Chat</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-amber-900 mb-2">🐝 Bee Database</h1>
+                <p class="text-amber-700">Explore all bees, their stats, and how to obtain them</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-amber-100 mb-8">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-1">
+                        <input type="text" id="searchInput" placeholder="Search bees..." class="w-full pl-10 pr-4 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        <button onclick="filterRarity('all')" class="rarity-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-amber-500 text-white" data-rarity="all">All</button>
+                        <button onclick="filterRarity('Common')" class="rarity-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-rarity="Common">Common</button>
+                        <button onclick="filterRarity('Rare')" class="rarity-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-rarity="Rare">Rare</button>
+                        <button onclick="filterRarity('Epic')" class="rarity-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-rarity="Epic">Epic</button>
+                        <button onclick="filterRarity('Legendary')" class="rarity-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-rarity="Legendary">Legendary</button>
+                        <button onclick="filterRarity('Mythic')" class="rarity-btn px-3 py-1.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200" data-rarity="Mythic">Mythic</button>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4">
+                    <span class="text-sm text-gray-500 mr-2">Color:</span>
+                    <button onclick="filterColor('all')" class="color-btn px-3 py-1.5 rounded-lg text-sm bg-amber-500 text-white" data-color="all">All</button>
+                    <button onclick="filterColor('Red')" class="color-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 hover:bg-gray-200" data-color="Red">🔴 Red</button>
+                    <button onclick="filterColor('Blue')" class="color-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 hover:bg-gray-200" data-color="Blue">🔵 Blue</button>
+                    <button onclick="filterColor('Colorless')" class="color-btn px-3 py-1.5 rounded-lg text-sm bg-gray-100 hover:bg-gray-200" data-color="Colorless">⚪ Colorless</button>
+                </div>
+            </div>
+
+            <!-- Results Count -->
+            <p id="resultsCount" class="text-amber-700 mb-4">Loading bees...</p>
+
+            <!-- Bee Grid -->
+            <div id="beeGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Bees will be inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="beeModal" class="modal fixed inset-0 bg-black/50 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-3">
+                        <span id="modalColor" class="text-3xl">🔴</span>
+                        <h2 id="modalName" class="text-2xl font-bold">Bee Name</h2>
+                    </div>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <span id="modalRarity" class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-gray-100 mb-4">Rarity</span>
+                <p id="modalDesc" class="text-gray-600 mb-4">Description</p>
+                <div class="grid grid-cols-3 gap-4 p-4 bg-amber-50 rounded-xl mb-4">
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-gray-900" id="modalAttack">1</div>
+                        <div class="text-xs text-gray-500">Attack</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-gray-900" id="modalSpeed">14</div>
+                        <div class="text-xs text-gray-500">Speed</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl font-bold text-gray-900" id="modalEnergy">20</div>
+                        <div class="text-xs text-gray-500">Energy</div>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium">⭐ Ability:</span>
+                        <span id="modalAbility" class="text-gray-600">Ability</span>
+                    </div>
+                    <div class="p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium">How to obtain:</span>
+                        <p id="modalObtain" class="text-gray-600 text-sm mt-1">Obtain info</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-100 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="text-2xl">🐝</span>
+                <span class="font-bold text-xl text-white">BSS Guide</span>
+            </div>
+            <p class="text-amber-300 text-sm">Unofficial fan-made guide for Bee Swarm Simulator</p>
+        </div>
+    </footer>
+
+    <script>
+        const bees = [
+            { name: "Basic Bee", rarity: "Common", color: "Colorless", attack: 1, speed: 14, energy: 20, ability: "Gather Pollen", description: "The most basic bee. Great for beginners.", obtain: "Starter bee, Basic Eggs" },
+            { name: "Bomber Bee", rarity: "Common", color: "Red", attack: 1, speed: 14, energy: 25, ability: "Bomb", description: "Drops bombs that collect pollen.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Brave Bee", rarity: "Common", color: "Red", attack: 3, speed: 14, energy: 20, ability: "Brave Bash", description: "Courageous bee with extra damage.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Bumble Bee", rarity: "Common", color: "Blue", attack: 1, speed: 11, energy: 40, ability: "Buzz Bomb", description: "Slow but has lots of energy.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Cool Bee", rarity: "Common", color: "Blue", attack: 1, speed: 14, energy: 20, ability: "Cool Breeze", description: "Creates cooling for blue pollen.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Hasty Bee", rarity: "Common", color: "Colorless", attack: 1, speed: 18, energy: 20, ability: "Haste", description: "One of the fastest bees.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Looker Bee", rarity: "Common", color: "Colorless", attack: 1, speed: 14, energy: 20, ability: "Focus", description: "Improves critical hits.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Rad Bee", rarity: "Common", color: "Red", attack: 2, speed: 14, energy: 20, ability: "Rad Explosion", description: "Creates red pollen bursts.", obtain: "Basic, Silver, Gold, Diamond Egg" },
+            { name: "Riley Bee", rarity: "Rare", color: "Red", attack: 2, speed: 14, energy: 25, ability: "Red Boost", description: "Red bee leader.", obtain: "Silver, Gold, Diamond Egg" },
+            { name: "Bucko Bee", rarity: "Rare", color: "Blue", attack: 2, speed: 14, energy: 25, ability: "Blue Boost", description: "Blue bee leader.", obtain: "Silver, Gold, Diamond Egg" },
+            { name: "Fire Bee", rarity: "Rare", color: "Red", attack: 3, speed: 16, energy: 20, ability: "Flame Heat", description: "Generates heat for red pollen.", obtain: "Silver, Gold, Diamond Egg" },
+            { name: "Frosty Bee", rarity: "Rare", color: "Blue", attack: 2, speed: 14, energy: 25, ability: "Frost", description: "Creates frost for blue pollen.", obtain: "Silver, Gold, Diamond Egg" },
+            { name: "Honey Bee", rarity: "Rare", color: "Colorless", attack: 1, speed: 15, energy: 25, ability: "Honey Gift", description: "Produces bonus honey tokens.", obtain: "Silver, Gold, Diamond Egg" },
+            { name: "Demon Bee", rarity: "Epic", color: "Red", attack: 5, speed: 16, energy: 25, ability: "Dark Flames", description: "Fierce bee with powerful attacks.", obtain: "Gold, Diamond Egg" },
+            { name: "Diamond Bee", rarity: "Epic", color: "Blue", attack: 3, speed: 18, energy: 25, ability: "Sparkle", description: "Finds valuable tokens.", obtain: "Gold, Diamond Egg" },
+            { name: "Lion Bee", rarity: "Epic", color: "Red", attack: 5, speed: 15, energy: 30, ability: "Lion's Roar", description: "Brave and powerful.", obtain: "Gold, Diamond Egg" },
+            { name: "Ninja Bee", rarity: "Epic", color: "Colorless", attack: 4, speed: 20, energy: 20, ability: "Stealth", description: "Fastest bee with ninja abilities.", obtain: "Gold, Diamond Egg" },
+            { name: "Photon Bee", rarity: "Legendary", color: "Colorless", attack: 4, speed: 18, energy: 30, ability: "Beamstorm", description: "Shoots beams of light.", obtain: "Diamond, Star Egg" },
+            { name: "Tabby Bee", rarity: "Legendary", color: "Colorless", attack: 3, speed: 16, energy: 25, ability: "Scratch", description: "Gets stronger with stacks.", obtain: "500 Tickets from Shop" },
+            { name: "Fuzzy Bee", rarity: "Mythic", color: "Colorless", attack: 3, speed: 14, energy: 45, ability: "Fuzzy Coat", description: "Creates fuzz bombs.", obtain: "Mythic Egg only" },
+            { name: "Spicy Bee", rarity: "Mythic", color: "Red", attack: 5, speed: 16, energy: 35, ability: "Inferno", description: "Creates inferno rings.", obtain: "Mythic Egg only" },
+            { name: "Tadpole Bee", rarity: "Mythic", color: "Blue", attack: 2, speed: 14, energy: 40, ability: "Bubble Splash", description: "Creates bubble explosions.", obtain: "Mythic Egg only" },
+            { name: "Vector Bee", rarity: "Mythic", color: "Colorless", attack: 4, speed: 17, energy: 35, ability: "Vector", description: "Creates triangular marks.", obtain: "Mythic Egg only" },
+        ];
+
+        const colorIcons = { Red: "🔴", Blue: "🔵", Colorless: "⚪" };
+        const rarityColors = {
+            Common: "bg-gray-100 text-gray-800",
+            Rare: "bg-blue-100 text-blue-800",
+            Epic: "bg-purple-100 text-purple-800",
+            Legendary: "bg-amber-100 text-amber-800",
+            Mythic: "bg-gradient-to-r from-pink-100 to-purple-100 text-pink-800"
+        };
+
+        let currentRarity = 'all';
+        let currentColor = 'all';
+        let searchTerm = '';
+
+        function renderBees() {
+            const filtered = bees.filter(bee => {
+                const matchRarity = currentRarity === 'all' || bee.rarity === currentRarity;
+                const matchColor = currentColor === 'all' || bee.color === currentColor;
+                const matchSearch = bee.name.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchRarity && matchColor && matchSearch;
+            });
+
+            document.getElementById('resultsCount').textContent = filtered.length + ' bees found';
+            
+            const grid = document.getElementById('beeGrid');
+            grid.innerHTML = filtered.map(bee => `
+                <div onclick="openModal('${bee.name}')" class="bee-card bg-white rounded-xl p-4 shadow-sm border border-amber-100 cursor-pointer">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="text-3xl">${colorIcons[bee.color]}</div>
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${rarityColors[bee.rarity]}">${bee.rarity}</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-1">${bee.name}</h3>
+                    <p class="text-sm text-gray-500 mb-3 line-clamp-2">${bee.description}</p>
+                    <div class="flex gap-4 text-xs text-gray-600">
+                        <span>⚡ ${bee.attack}</span>
+                        <span>🛡️ ${bee.speed}</span>
+                        <span>❤️ ${bee.energy}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterRarity(rarity) {
+            currentRarity = rarity;
+            document.querySelectorAll('.rarity-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            document.querySelector(`[data-rarity="${rarity}"]`).classList.remove('bg-gray-100', 'text-gray-700');
+            document.querySelector(`[data-rarity="${rarity}"]`).classList.add('bg-amber-500', 'text-white');
+            renderBees();
+        }
+
+        function filterColor(color) {
+            currentColor = color;
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-white');
+                btn.classList.add('bg-gray-100');
+            });
+            document.querySelector(`[data-color="${color}"]`).classList.remove('bg-gray-100');
+            document.querySelector(`[data-color="${color}"]`).classList.add('bg-amber-500', 'text-white');
+            renderBees();
+        }
+
+        function openModal(name) {
+            const bee = bees.find(b => b.name === name);
+            if (!bee) return;
+            
+            document.getElementById('modalName').textContent = bee.name;
+            document.getElementById('modalColor').textContent = colorIcons[bee.color];
+            document.getElementById('modalRarity').textContent = bee.rarity;
+            document.getElementById('modalRarity').className = 'inline-block px-3 py-1 rounded-full text-sm font-medium ' + rarityColors[bee.rarity];
+            document.getElementById('modalDesc').textContent = bee.description;
+            document.getElementById('modalAttack').textContent = bee.attack;
+            document.getElementById('modalSpeed').textContent = bee.speed;
+            document.getElementById('modalEnergy').textContent = bee.energy;
+            document.getElementById('modalAbility').textContent = bee.ability;
+            document.getElementById('modalObtain').textContent = bee.obtain;
+            
+            document.getElementById('beeModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('beeModal').classList.remove('active');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderBees();
+        });
+
+        document.getElementById('beeModal').addEventListener('click', (e) => {
+            if (e.target.id === 'beeModal') closeModal();
+        });
+
+        renderBees();
+    </script>
+</body>
+</html>

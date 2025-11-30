@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSS Chat - BSS Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen flex flex-col">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-white py-6 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">BSS AI Assistant</h1>
+                        <p class="text-amber-100 text-sm">Ask me anything about Bee Swarm Simulator!</p>
+                    </div>
+                </div>
+                <a href="index.html" class="px-4 py-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors">🏠 Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="flex-1 overflow-y-auto px-4 py-6">
+        <div id="messages" class="max-w-3xl mx-auto space-y-4">
+            <div class="flex gap-3">
+                <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="text-lg">🐝</span>
+                </div>
+                <div class="max-w-[80%] bg-white rounded-xl p-4 shadow-sm">
+                    <p class="text-sm">Hey there, beekeeper! 🐝 I'm your Bee Swarm Simulator expert. Click on a question below or type your own!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suggested Questions -->
+    <div class="px-4 pb-4">
+        <div class="max-w-3xl mx-auto">
+            <p class="text-sm text-gray-500 mb-2">✨ Try asking:</p>
+            <div class="flex flex-wrap gap-2" id="suggestions">
+                <button onclick="askQuestion('What\'s the best bee for beginners?')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">What's the best bee for beginners?</button>
+                <button onclick="askQuestion('How do I get a Mythic bee?')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">How do I get a Mythic bee?</button>
+                <button onclick="askQuestion('What fields give the most honey?')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">What fields give the most honey?</button>
+                <button onclick="askQuestion('How do I defeat the Stump Snail?')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">How do I defeat the Stump Snail?</button>
+                <button onclick="askQuestion('What are the best quests to complete first?')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">What are the best quests to complete first?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="border-t bg-white p-4">
+        <div class="max-w-3xl mx-auto">
+            <form onsubmit="handleSubmit(event)" class="flex gap-2">
+                <input type="text" id="userInput" placeholder="Ask about bees, fields, quests, strategies..." class="flex-1 px-4 py-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const answers = {
+            "best bee for beginners": "For beginners, I recommend focusing on getting Hasty Bee for speed, Looker Bee for critical hits, and Honey Bee for extra honey tokens! 🐝 Basic Bee is also great as your starter. Try to get a mix of red, blue, and colorless bees early on.",
+            "mythic bee": "Mythic bees can ONLY be obtained from Mythic Eggs! 🥚 You can get Mythic Eggs from: completing Spirit Bear quests, defeating Mondo Chick, purchasing with Robux, or very rarely from certain codes. The 6 Mythic bees are: Fuzzy Bee, Spicy Bee, Tadpole Bee, Vector Bee, Buoyant Bee, and Precise Bee.",
+            "most honey": "The best fields for honey depend on your progress! 🍯 For beginners: Sunflower & Clover Fields. Mid-game: Rose Field (red) and Pine Tree Forest (blue). End-game: Pepper Patch (highest red), Mountain Top (highest blue), and Coconut Field. Use field boosters for 2x pollen!",
+            "stump snail": "The Stump Snail is a tough boss in Stump Field! 🐌 Tips: It takes HOURS to defeat (8-12 hours), bring combat bees like Lion Bee, Demon Bee, and Vicious Bee. Use a field booster and work on it gradually. The reward is a Stump Field Boost permanent upgrade!",
+            "quests": "Start with Black Bear's quests - they're the easiest and give great early rewards! 📜 Priority order: 1) Black Bear (beginner), 2) Mother Bear (Cub Buddy), 3) Science Bear (Translator for Gifted Bees), 4) Brown Bear (daily quests). Save Spirit Bear for end-game!",
+            "tickets": "Great ways to get tickets: 🎟️ Complete quests (especially Black Bear), defeat mobs and bosses, use promo codes, check the Ticket Shop daily, and participate in events like Beesmas. Mondo Chick gives tickets every hour!",
+            "gifted": "Gifted bees have a ⭐ star and give +10% hive bonus! To get them: 1) Feed bees Star Treats (guarantees gifted), 2) Use Royal Jelly repeatedly (1/250 chance), 3) Some are from tickets (Tabby, Photon, etc.). Gifted Vicious Bee is from defeating 100+ Vicious Bees!"
+        };
+
+        function findAnswer(question) {
+            const q = question.toLowerCase();
+            if (q.includes("beginner") || q.includes("start")) return answers["best bee for beginners"];
+            if (q.includes("mythic")) return answers["mythic bee"];
+            if (q.includes("honey") || q.includes("field")) return answers["most honey"];
+            if (q.includes("stump") || q.includes("snail")) return answers["stump snail"];
+            if (q.includes("quest")) return answers["quests"];
+            if (q.includes("ticket")) return answers["tickets"];
+            if (q.includes("gifted")) return answers["gifted"];
+            return "I'm not sure about that specific question, but try checking our Bee Database, Field Guide, or Quest Guide pages for more info! 🐝 You can also try rephrasing your question.";
+        }
+
+        function addMessage(content, isUser) {
+            const messages = document.getElementById('messages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex gap-3 ' + (isUser ? 'justify-end' : '');
+            
+            if (!isUser) {
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-lg">🐝</span>
+                    </div>
+                    <div class="max-w-[80%] bg-white rounded-xl p-4 shadow-sm">
+                        <p class="text-sm whitespace-pre-wrap">${content}</p>
+                    </div>
+                `;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="max-w-[80%] bg-amber-500 text-white rounded-xl p-4">
+                        <p class="text-sm">${content}</p>
+                    </div>
+                    <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    </div>
+                `;
+            }
+            
+            messages.appendChild(msgDiv);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function askQuestion(question) {
+            addMessage(question, true);
+            setTimeout(() => {
+                addMessage(findAnswer(question), false);
+            }, 500);
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('userInput');
+            const question = input.value.trim();
+            if (!question) return;
+            
+            askQuestion(question);
+            input.value = '';
+        }
+    </script>
+</body>
+</html>

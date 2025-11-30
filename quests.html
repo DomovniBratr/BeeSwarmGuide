@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Guide - BSS Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                        <span class="text-xl">🐝</span>
+                    </div>
+                    <span class="font-bold text-xl text-amber-900 hidden sm:block">BSS Guide</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🏠 Home</a>
+                    <a href="bees.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🐝 Bees</a>
+                    <a href="fields.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🗺️ Fields</a>
+                    <a href="quests.html" class="px-4 py-2 rounded-lg bg-amber-100 text-amber-900 font-medium">📜 Quests</a>
+                    <a href="codes.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🎁 Codes</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-amber-900 mb-2">📜 Quest Guide</h1>
+                <p class="text-amber-700">Complete walkthroughs for all NPC quests</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- NPC List -->
+                <div class="lg:col-span-1 space-y-3" id="npcList">
+                    <!-- NPCs inserted here -->
+                </div>
+
+                <!-- Quest Details -->
+                <div class="lg:col-span-2">
+                    <div id="questDetails" class="bg-white rounded-xl overflow-hidden shadow-sm">
+                        <!-- Quest details inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-100 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="text-2xl">🐝</span>
+                <span class="font-bold text-xl text-white">BSS Guide</span>
+            </div>
+            <p class="text-amber-300 text-sm">Unofficial fan-made guide for Bee Swarm Simulator</p>
+        </div>
+    </footer>
+
+    <script>
+        const npcs = [
+            {
+                name: "Black Bear", emoji: "🐻", location: "Near Sunflower Field", difficulty: "Beginner",
+                description: "Your first quest giver. Teaches you the basics.",
+                quests: [
+                    { name: "Pollen Intro", task: "Collect 100 pollen from Sunflower Field", reward: "100 Honey", tips: "Just walk through flowers!" },
+                    { name: "Getting Started", task: "Collect 300 pollen from any field", reward: "200 Honey", tips: "Try Dandelion Field" },
+                    { name: "Bee Gathering", task: "Collect 1,000 pollen total", reward: "500 Honey + Ticket", tips: "Convert pollen regularly" },
+                    { name: "Making Honey", task: "Make 1,000 Honey", reward: "1,000 Honey", tips: "Fill backpack and return to hive" },
+                    { name: "Bear's Beginning", task: "Make 10,000 Honey total", reward: "10,000 Honey + Silver Egg", tips: "Your first egg!" }
+                ]
+            },
+            {
+                name: "Brown Bear", emoji: "🧸", location: "Near Clover Field", difficulty: "Intermediate",
+                description: "Focuses on specific field challenges.",
+                quests: [
+                    { name: "Clover Collector", task: "Collect 25,000 pollen from Clover Field", reward: "10,000 Honey", tips: "Lucky clovers give bonuses" },
+                    { name: "Spider Survivor", task: "Collect 30,000 from Spider Field", reward: "15,000 Honey + Tickets x3", tips: "Bring combat bees" },
+                    { name: "Strawberry Picker", task: "Collect 40,000 from Strawberry Field", reward: "20,000 Honey", tips: "Red bees work best" },
+                    { name: "Field Master", task: "Collect from all 5-Bee zone fields", reward: "Gold Egg", tips: "Complete all zones" }
+                ]
+            },
+            {
+                name: "Mother Bear", emoji: "🐻‍❄️", location: "Behind Pro Shop", difficulty: "Intermediate",
+                description: "Rewards consistent grinding.",
+                quests: [
+                    { name: "Cozy Bear", task: "Collect 10,000 Red pollen", reward: "5,000 Honey", tips: "Strawberry or Mushroom Field" },
+                    { name: "Warm Bear", task: "Collect 10,000 Blue pollen", reward: "5,000 Honey", tips: "Blue Flower or Bamboo" },
+                    { name: "Hugging Bear", task: "Defeat 5 Spiders", reward: "10,000 Honey + Treats", tips: "Found in Spider Field" }
+                ]
+            },
+            {
+                name: "Polar Bear", emoji: "❄️", location: "Snow Area", difficulty: "Advanced",
+                description: "Challenging quests with great rewards.",
+                quests: [
+                    { name: "Cold Storage", task: "Collect 100,000 Blue pollen", reward: "50,000 Honey", tips: "Pine Tree Forest" },
+                    { name: "Frozen Feast", task: "Feed bees 50 Treats", reward: "Royal Jelly x5", tips: "Stock up on treats" },
+                    { name: "Polar Power", task: "Collect 500,000 total pollen", reward: "Star Jelly + Mythic Egg", tips: "Long grind but worth it!" }
+                ]
+            },
+            {
+                name: "Science Bear", emoji: "🔬", location: "Near Mushroom Field", difficulty: "Intermediate",
+                description: "Experimental quests teaching mechanics.",
+                quests: [
+                    { name: "Data Collection", task: "Collect 20,000 pollen using abilities", reward: "10,000 Honey", tips: "Wait for bee abilities" },
+                    { name: "Research", task: "Collect 100 tokens", reward: "25,000 Honey + Ticket", tips: "Tokens are field drops" }
+                ]
+            }
+        ];
+
+        let selectedNpc = npcs[0];
+        let completedQuests = {};
+
+        function renderNpcList() {
+            document.getElementById('npcList').innerHTML = npcs.map((npc, i) => {
+                const completed = (npc.quests || []).filter((_, qi) => completedQuests[`${npc.name}-${qi}`]).length;
+                const total = (npc.quests || []).length;
+                const isSelected = selectedNpc.name === npc.name;
+                
+                return `
+                    <div onclick="selectNpc(${i})" class="bg-white rounded-xl p-4 cursor-pointer transition-all hover:shadow-md ${isSelected ? 'ring-2 ring-amber-400 bg-amber-50' : ''}">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl">${npc.emoji}</span>
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-900">${npc.name}</h3>
+                                <span class="text-xs px-2 py-0.5 bg-gray-100 rounded-full">${npc.difficulty}</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-medium text-amber-600">${completed}/${total}</div>
+                                <div class="w-16 h-1.5 bg-gray-200 rounded-full mt-1">
+                                    <div class="h-full bg-amber-500 rounded-full" style="width: ${(completed/total)*100}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderQuests() {
+            const npc = selectedNpc;
+            document.getElementById('questDetails').innerHTML = `
+                <div class="bg-gradient-to-r from-amber-400 to-orange-500 text-white p-6">
+                    <div class="flex items-center gap-3">
+                        <span class="text-4xl">${npc.emoji}</span>
+                        <div>
+                            <h2 class="text-2xl font-bold">${npc.name}</h2>
+                            <p class="text-amber-100 text-sm">${npc.location}</p>
+                        </div>
+                    </div>
+                    <p class="text-amber-50 mt-2">${npc.description}</p>
+                </div>
+                <div class="divide-y">
+                    ${npc.quests.map((quest, i) => {
+                        const isCompleted = completedQuests[`${npc.name}-${i}`];
+                        return `
+                            <div class="p-4 hover:bg-gray-50 ${isCompleted ? 'bg-green-50' : ''}">
+                                <div class="flex items-start gap-3">
+                                    <button onclick="toggleQuest('${npc.name}', ${i})" class="mt-1 flex-shrink-0">
+                                        ${isCompleted 
+                                            ? '<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>'
+                                            : '<svg class="w-5 h-5 text-gray-300 hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"></circle></svg>'
+                                        }
+                                    </button>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold ${isCompleted ? 'text-green-700 line-through' : 'text-gray-900'}">
+                                            ${i + 1}. ${quest.name}
+                                        </h4>
+                                        <p class="text-sm text-gray-600 mb-2"><span class="font-medium">Task:</span> ${quest.task}</p>
+                                        <span class="inline-flex items-center px-2 py-1 bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">
+                                            🎁 ${quest.reward}
+                                        </span>
+                                        <div class="mt-2 p-2 bg-blue-50 rounded-lg text-sm text-blue-700 flex items-start gap-2">
+                                            ⭐ ${quest.tips}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function selectNpc(index) {
+            selectedNpc = npcs[index];
+            renderNpcList();
+            renderQuests();
+        }
+
+        function toggleQuest(npcName, questIndex) {
+            const key = `${npcName}-${questIndex}`;
+            completedQuests[key] = !completedQuests[key];
+            renderNpcList();
+            renderQuests();
+        }
+
+        renderNpcList();
+        renderQuests();
+    </script>
+</body>
+</html>

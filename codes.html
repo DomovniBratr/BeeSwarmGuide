@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Codes - BSS Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                        <span class="text-xl">🐝</span>
+                    </div>
+                    <span class="font-bold text-xl text-amber-900 hidden sm:block">BSS Guide</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🏠 Home</a>
+                    <a href="bees.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🐝 Bees</a>
+                    <a href="fields.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🗺️ Fields</a>
+                    <a href="quests.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">📜 Quests</a>
+                    <a href="codes.html" class="px-4 py-2 rounded-lg bg-amber-100 text-amber-900 font-medium">🎁 Codes</a>
+                    <a href="chat.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🤖 AI Chat</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-8 px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-amber-900 mb-2">🎁 Promo Codes</h1>
+                <p class="text-amber-700">Redeem these codes for free rewards!</p>
+            </div>
+
+            <!-- How to Redeem -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8 flex items-start gap-3">
+                <span class="text-xl">✨</span>
+                <div>
+                    <strong class="text-amber-800">How to redeem:</strong>
+                    <span class="text-amber-700"> In game, click the cogwheel (Settings) in the top left, then scroll down and enter your code in the "Enter Code" box.</span>
+                </div>
+            </div>
+
+            <!-- Active Codes -->
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    🎁 Active Codes (<span id="activeCount">0</span>)
+                </h2>
+                <div id="activeCodes" class="space-y-4">
+                    <!-- Codes inserted here -->
+                </div>
+            </div>
+
+            <!-- Expired Codes -->
+            <div>
+                <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    ⚠️ Expired Codes
+                </h2>
+                <div class="bg-gray-50 rounded-xl border p-4">
+                    <div id="expiredCodes" class="flex flex-wrap gap-2">
+                        <!-- Expired codes here -->
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center text-sm text-gray-500 mt-8">
+                Codes are collected from official sources. Some codes may expire without notice.
+            </p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-100 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="text-2xl">🐝</span>
+                <span class="font-bold text-xl text-white">BSS Guide</span>
+            </div>
+            <p class="text-amber-300 text-sm">Unofficial fan-made guide for Bee Swarm Simulator</p>
+        </div>
+    </footer>
+
+    <script>
+        const activeCodes = [
+            { code: "1MFAVORITES", rewards: ["Tickets x5", "Royal Jelly", "Gumdrops x10"], expires: "Unknown", added: "December 2024" },
+            { code: "2YEARS", rewards: ["2 Billion Honey", "Tickets x2", "Royal Jelly"], expires: "Unknown", added: "November 2024" },
+            { code: "BEESMAS2024", rewards: ["Gingerbread Bears", "Tickets x5", "Snowflakes x10"], expires: "January 2025", added: "December 2024" },
+            { code: "WINTER", rewards: ["Snowflakes x5", "Tickets x3"], expires: "Unknown", added: "December 2024" },
+            { code: "SECRETCODE", rewards: ["Royal Jelly", "Tickets x3", "Honey x500k"], expires: "Unknown", added: "November 2024" },
+            { code: "NEWPLAYER", rewards: ["Honey x1M", "Tickets x5", "Silver Egg"], expires: "Never", added: "Permanent" },
+            { code: "BUZZING", rewards: ["Treats x50", "Gumdrops x25"], expires: "Unknown", added: "October 2024" },
+            { code: "FREEBEE", rewards: ["Ticket", "Jelly Beans x10"], expires: "Unknown", added: "September 2024" }
+        ];
+
+        const expiredCodes = [
+            { code: "SUMMER2024", expired: "September 2024" },
+            { code: "HALLOWEEN", expired: "November 2024" },
+            { code: "TURKEY", expired: "December 2024" },
+            { code: "OLDCODE123", expired: "August 2024" }
+        ];
+
+        function copyCode(code, btnId) {
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById(btnId);
+                btn.innerHTML = '✅ Copied!';
+                btn.classList.add('bg-green-100', 'text-green-700');
+                setTimeout(() => {
+                    btn.innerHTML = '📋 Copy';
+                    btn.classList.remove('bg-green-100', 'text-green-700');
+                }, 2000);
+            });
+        }
+
+        document.getElementById('activeCount').textContent = activeCodes.length;
+
+        document.getElementById('activeCodes').innerHTML = activeCodes.map((item, i) => `
+            <div class="bg-white rounded-xl p-4 border-l-4 border-l-green-500 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <code class="text-lg font-mono font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded">${item.code}</code>
+                            <button id="copyBtn${i}" onclick="copyCode('${item.code}', 'copyBtn${i}')" class="px-3 py-1.5 border rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                                📋 Copy
+                            </button>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            ${item.rewards.map(r => `<span class="px-2 py-1 bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-200">${r}</span>`).join('')}
+                        </div>
+                        <div class="flex items-center gap-4 text-xs text-gray-500">
+                            <span>⏰ Expires: ${item.expires}</span>
+                            <span>Added: ${item.added}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        document.getElementById('expiredCodes').innerHTML = expiredCodes.map(item => `
+            <div class="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border">
+                <code class="text-sm font-mono text-gray-400 line-through">${item.code}</code>
+                <span class="text-xs text-gray-400">Expired ${item.expired}</span>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>

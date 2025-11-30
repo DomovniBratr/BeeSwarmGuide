@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculators - BSS Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                        <span class="text-xl">🐝</span>
+                    </div>
+                    <span class="font-bold text-xl text-amber-900 hidden sm:block">BSS Guide</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🏠 Home</a>
+                    <a href="bees.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🐝 Bees</a>
+                    <a href="fields.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🗺️ Fields</a>
+                    <a href="codes.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🎁 Codes</a>
+                    <a href="calculators.html" class="px-4 py-2 rounded-lg bg-amber-100 text-amber-900 font-medium">🔢 Calculators</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium mb-4 border border-amber-200">
+                    👑 Premium Feature
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-amber-900 mb-2">🔢 Calculators</h1>
+                <p class="text-amber-700">Optimize your grinding with these powerful tools</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-6 flex-wrap">
+                <button onclick="showTab('honey')" id="tab-honey" class="tab-btn px-4 py-2 rounded-lg font-medium bg-amber-500 text-white">📊 Honey Rate</button>
+                <button onclick="showTab('grind')" id="tab-grind" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-600 hover:bg-gray-100">⏱️ Grind Time</button>
+                <button onclick="showTab('upgrade')" id="tab-upgrade" class="tab-btn px-4 py-2 rounded-lg font-medium bg-white text-gray-600 hover:bg-gray-100">📈 Upgrade Cost</button>
+            </div>
+
+            <!-- Honey Rate Tab -->
+            <div id="panel-honey" class="tab-panel grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-4 flex items-center gap-2">⚡ Input Settings</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of Bees: <span id="beeCountVal">25</span></label>
+                            <input type="range" id="beeCount" min="1" max="50" value="25" class="w-full" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Average Bee Level: <span id="beeLevelVal">5</span></label>
+                            <input type="range" id="beeLevel" min="1" max="25" value="5" class="w-full" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Field</label>
+                            <select id="fieldSelect" class="w-full p-2 border rounded-lg" onchange="calculate()">
+                                <option value="100">Sunflower Field</option>
+                                <option value="120">Mushroom Field</option>
+                                <option value="160">Strawberry Field</option>
+                                <option value="250" selected>Rose Field</option>
+                                <option value="350">Pepper Patch</option>
+                                <option value="400">Mountain Top</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <label class="text-sm font-medium text-gray-700">Field Boost Active</label>
+                            <input type="checkbox" id="hasBoost" class="w-5 h-5" onchange="calculate()">
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">🎯 Results</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl p-4 text-center shadow-sm">
+                            <div class="text-3xl font-bold text-amber-600" id="pollenPerMin">0</div>
+                            <div class="text-sm text-gray-500">Pollen/Minute</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-4 text-center shadow-sm">
+                            <div class="text-3xl font-bold text-amber-600" id="honeyPerHour">0</div>
+                            <div class="text-sm text-gray-500">Honey/Hour</div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 mt-4 shadow-sm">
+                        <h4 class="font-medium text-gray-900 mb-2">Efficiency Tips:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Use bees that match the field color for +50% pollen</li>
+                            <li>• Field boosters double your pollen rate</li>
+                            <li>• Higher level bees gather faster</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grind Time Tab -->
+            <div id="panel-grind" class="tab-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">⏱️ Honey Goal</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Honey</label>
+                            <input type="number" id="currentHoney" value="1000000" class="w-full p-2 border rounded-lg" oninput="calculateGrind()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Honey</label>
+                            <input type="number" id="targetHoney" value="10000000" class="w-full p-2 border rounded-lg" oninput="calculateGrind()">
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="setTarget(1000000)" class="px-3 py-1 border rounded-lg hover:bg-amber-50">1M</button>
+                            <button onclick="setTarget(10000000)" class="px-3 py-1 border rounded-lg hover:bg-amber-50">10M</button>
+                            <button onclick="setTarget(100000000)" class="px-3 py-1 border rounded-lg hover:bg-amber-50">100M</button>
+                            <button onclick="setTarget(1000000000)" class="px-3 py-1 border rounded-lg hover:bg-amber-50">1B</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-2">Time Estimate</h3>
+                    <p class="text-sm text-gray-500 mb-4">Based on your current settings</p>
+                    <div class="text-center py-6">
+                        <div class="text-5xl font-bold text-blue-600" id="grindTime">0h 0m</div>
+                        <p class="text-gray-500 mt-2" id="grindInfo">to earn 9M honey</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upgrade Cost Tab -->
+            <div id="panel-upgrade" class="tab-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-4">🐝 Bee Level Range</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Current Level: <span id="curLevelVal">1</span></label>
+                            <input type="range" id="curLevel" min="1" max="24" value="1" class="w-full" oninput="calculateUpgrade()">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Level: <span id="tarLevelVal">10</span></label>
+                            <input type="range" id="tarLevel" min="2" max="25" value="10" class="w-full" oninput="calculateUpgrade()">
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-sm">
+                    <h3 class="text-lg font-bold mb-2">Upgrade Cost</h3>
+                    <p class="text-sm text-gray-500 mb-4">Total honey needed</p>
+                    <div class="text-center py-6">
+                        <div class="text-4xl font-bold text-green-600" id="upgradeCost">0</div>
+                        <p class="text-gray-500 mt-2" id="upgradeInfo">honey to level 1 → 10</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-100 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <span class="text-2xl">🐝</span>
+            <span class="font-bold text-xl text-white ml-2">BSS Guide</span>
+        </div>
+    </footer>
+
+    <script>
+        const upgradeCosts = [10, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000, 10000000, 25000000, 50000000, 100000000, 250000000, 500000000, 1000000000];
+
+        function formatNum(num) {
+            if (num >= 1e9) return (num / 1e9).toFixed(1) + "B";
+            if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
+            if (num >= 1e3) return (num / 1e3).toFixed(1) + "K";
+            return num.toString();
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-amber-500', 'text-white');
+                b.classList.add('bg-white', 'text-gray-600');
+            });
+            document.getElementById('panel-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.remove('bg-white', 'text-gray-600');
+            document.getElementById('tab-' + tab).classList.add('bg-amber-500', 'text-white');
+        }
+
+        function calculate() {
+            const bees = parseInt(document.getElementById('beeCount').value);
+            const level = parseInt(document.getElementById('beeLevel').value);
+            const fieldBase = parseInt(document.getElementById('fieldSelect').value);
+            const boost = document.getElementById('hasBoost').checked ? 2 : 1;
+
+            document.getElementById('beeCountVal').textContent = bees;
+            document.getElementById('beeLevelVal').textContent = level;
+
+            const levelBonus = 1 + (level * 0.1);
+            const pollenPerMin = Math.floor(bees * fieldBase * levelBonus * boost);
+            const honeyPerHour = Math.floor(pollenPerMin * 60 * 0.8);
+
+            document.getElementById('pollenPerMin').textContent = formatNum(pollenPerMin);
+            document.getElementById('honeyPerHour').textContent = formatNum(honeyPerHour);
+
+            calculateGrind();
+        }
+
+        function calculateGrind() {
+            const current = parseInt(document.getElementById('currentHoney').value) || 0;
+            const target = parseInt(document.getElementById('targetHoney').value) || 0;
+            
+            const bees = parseInt(document.getElementById('beeCount').value);
+            const level = parseInt(document.getElementById('beeLevel').value);
+            const fieldBase = parseInt(document.getElementById('fieldSelect').value);
+            const boost = document.getElementById('hasBoost').checked ? 2 : 1;
+            const levelBonus = 1 + (level * 0.1);
+            const honeyPerHour = Math.floor(bees * fieldBase * levelBonus * boost * 60 * 0.8);
+
+            const needed = target - current;
+            if (honeyPerHour <= 0 || needed <= 0) {
+                document.getElementById('grindTime').textContent = "0h 0m";
+                document.getElementById('grindInfo').textContent = "Already reached!";
+                return;
+            }
+
+            const hours = Math.floor(needed / honeyPerHour);
+            const mins = Math.floor((needed % honeyPerHour) / (honeyPerHour / 60));
+
+            document.getElementById('grindTime').textContent = hours + "h " + mins + "m";
+            document.getElementById('grindInfo').textContent = "to earn " + formatNum(needed) + " honey";
+        }
+
+        function setTarget(val) {
+            document.getElementById('targetHoney').value = val;
+            calculateGrind();
+        }
+
+        function calculateUpgrade() {
+            const cur = parseInt(document.getElementById('curLevel').value);
+            let tar = parseInt(document.getElementById('tarLevel').value);
+            if (tar <= cur) tar = cur + 1;
+            document.getElementById('tarLevel').value = tar;
+
+            document.getElementById('curLevelVal').textContent = cur;
+            document.getElementById('tarLevelVal').textContent = tar;
+
+            let total = 0;
+            for (let i = cur; i < tar && i < upgradeCosts.length; i++) {
+                total += upgradeCosts[i];
+            }
+
+            document.getElementById('upgradeCost').textContent = formatNum(total);
+            document.getElementById('upgradeInfo').textContent = "honey to level " + cur + " → " + tar;
+        }
+
+        calculate();
+        calculateUpgrade();
+    </script>
+</body>
+</html>

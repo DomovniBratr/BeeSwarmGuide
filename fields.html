@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Guide - BSS Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .field-card { transition: all 0.3s ease; }
+        .field-card:hover { box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .expanded-content { display: none; }
+        .field-card.expanded .expanded-content { display: block; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-amber-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center">
+                        <span class="text-xl">🐝</span>
+                    </div>
+                    <span class="font-bold text-xl text-amber-900 hidden sm:block">BSS Guide</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-1">
+                    <a href="index.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🏠 Home</a>
+                    <a href="bees.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🐝 Bees</a>
+                    <a href="fields.html" class="px-4 py-2 rounded-lg bg-amber-100 text-amber-900 font-medium">🗺️ Fields</a>
+                    <a href="quests.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">📜 Quests</a>
+                    <a href="codes.html" class="px-4 py-2 rounded-lg text-gray-600 hover:bg-amber-50">🎁 Codes</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="py-8 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-amber-900 mb-2">🌻 Field Guide</h1>
+                <p class="text-amber-700">Master every field with strategies, tips, and bee recommendations</p>
+            </div>
+
+            <!-- Zone Filter -->
+            <div class="flex flex-wrap gap-2 justify-center mb-8" id="zoneFilters">
+                <button onclick="filterZone('all')" class="zone-btn px-4 py-2 rounded-full text-sm font-medium bg-amber-500 text-white" data-zone="all">All Zones</button>
+                <button onclick="filterZone('Starter')" class="zone-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 hover:bg-amber-100" data-zone="Starter">Starter</button>
+                <button onclick="filterZone('5 Bee Zone')" class="zone-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 hover:bg-amber-100" data-zone="5 Bee Zone">5 Bee Zone</button>
+                <button onclick="filterZone('15 Bee Zone')" class="zone-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 hover:bg-amber-100" data-zone="15 Bee Zone">15 Bee Zone</button>
+                <button onclick="filterZone('25 Bee Zone')" class="zone-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 hover:bg-amber-100" data-zone="25 Bee Zone">25 Bee Zone</button>
+                <button onclick="filterZone('35 Bee Zone')" class="zone-btn px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-600 hover:bg-amber-100" data-zone="35 Bee Zone">35 Bee Zone</button>
+            </div>
+
+            <!-- Fields Grid -->
+            <div id="fieldsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Fields inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-900 text-amber-100 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <span class="text-2xl">🐝</span>
+                <span class="font-bold text-xl text-white">BSS Guide</span>
+            </div>
+            <p class="text-amber-300 text-sm">Unofficial fan-made guide for Bee Swarm Simulator</p>
+        </div>
+    </footer>
+
+    <script>
+        const fields = [
+            { name: "Sunflower Field", zone: "Starter", pollen: "Colorless", requirement: "None", description: "The first field. Great for beginners.", tips: ["Best for new players", "Collect tokens frequently"], mobs: ["None"], bees: ["Basic Bee", "Hasty Bee"] },
+            { name: "Dandelion Field", zone: "Starter", pollen: "Colorless", requirement: "None", description: "Moderate pollen yield.", tips: ["Good for early grinding", "Watch for Rhino Beetles"], mobs: ["Rhino Beetle"], bees: ["Basic Bee", "Bomber Bee"] },
+            { name: "Mushroom Field", zone: "Starter", pollen: "Red", requirement: "None", description: "Produces red pollen primarily.", tips: ["Best early red field", "Great for red quests"], mobs: ["Ladybug"], bees: ["Rad Bee", "Riley Bee"] },
+            { name: "Blue Flower Field", zone: "Starter", pollen: "Blue", requirement: "None", description: "Primary source of early blue pollen.", tips: ["Best early blue field", "Pairs well with Cool Bee"], mobs: ["None"], bees: ["Cool Bee", "Bucko Bee"] },
+            { name: "Clover Field", zone: "Starter", pollen: "Colorless", requirement: "None", description: "Has a chance to spawn rare tokens.", tips: ["Look for lucky clovers", "Great token spawn rate"], mobs: ["Spider"], bees: ["Honey Bee", "Looker Bee"] },
+            { name: "Spider Field", zone: "5 Bee Zone", pollen: "Colorless", requirement: "5 Bees", description: "High risk, high reward.", tips: ["Watch out for spiders", "Bring combat bees"], mobs: ["Spider", "Cave Monster"], bees: ["Brave Bee", "Lion Bee"] },
+            { name: "Strawberry Field", zone: "5 Bee Zone", pollen: "Red", requirement: "5 Bees", description: "Red pollen and occasional treats.", tips: ["Great for red pollen", "Good quest field"], mobs: ["Ladybug"], bees: ["Riley Bee", "Fire Bee"] },
+            { name: "Stump Field", zone: "15 Bee Zone", pollen: "Colorless", requirement: "15 Bees", description: "Old tree stump with unique mechanics.", tips: ["Stump Snail boss spawns here", "High difficulty"], mobs: ["Stump Snail"], bees: ["Carpenter Bee", "Vicious Bee"] },
+            { name: "Rose Field", zone: "25 Bee Zone", pollen: "Red", requirement: "25 Bees", description: "Premium red pollen source.", tips: ["Best red field mid-game", "High pollen per flower"], mobs: ["Mantis", "Scorpion"], bees: ["Spicy Bee", "Demon Bee"] },
+            { name: "Pine Tree Forest", zone: "25 Bee Zone", pollen: "Blue", requirement: "25 Bees", description: "Dense forest with excellent blue pollen.", tips: ["Great blue yield", "Pine cones give bonuses"], mobs: ["Rhino Beetle", "Mantis"], bees: ["Tadpole Bee", "Frosty Bee"] },
+            { name: "Pepper Patch", zone: "35 Bee Zone", pollen: "Red", requirement: "35 Bees", description: "Spicy peppers that yield premium red pollen.", tips: ["Highest red yield", "End-game red grinding"], mobs: ["Fire Ant"], bees: ["Spicy Bee", "Demon Bee"] },
+            { name: "Mountain Top Field", zone: "35 Bee Zone", pollen: "Blue", requirement: "35 Bees", description: "High altitude with rare blue pollen.", tips: ["Premium blue pollen", "Snowflakes spawn"], mobs: ["Werewolf"], bees: ["Buoyant Bee", "Tadpole Bee"] }
+        ];
+
+        const pollenColors = { Red: "bg-red-100 text-red-800", Blue: "bg-blue-100 text-blue-800", Colorless: "bg-gray-100 text-gray-800" };
+        const zoneColors = {
+            "Starter": "from-green-400 to-emerald-500",
+            "5 Bee Zone": "from-yellow-400 to-amber-500",
+            "15 Bee Zone": "from-red-400 to-rose-500",
+            "25 Bee Zone": "from-purple-400 to-violet-500",
+            "35 Bee Zone": "from-pink-400 to-rose-500"
+        };
+
+        let currentZone = 'all';
+
+        function renderFields() {
+            const filtered = fields.filter(f => currentZone === 'all' || f.zone === currentZone);
+            
+            document.getElementById('fieldsGrid').innerHTML = filtered.map((field, i) => `
+                <div class="field-card bg-white rounded-xl overflow-hidden border shadow-sm cursor-pointer" onclick="toggleField(this)">
+                    <div class="h-2 bg-gradient-to-r ${zoneColors[field.zone] || 'from-gray-400 to-gray-500'}"></div>
+                    <div class="p-4">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="text-xl font-semibold flex items-center gap-2">🌸 ${field.name}</h3>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium ${pollenColors[field.pollen]}">${field.pollen} Pollen</span>
+                                    <span class="px-2 py-1 rounded-full text-xs font-medium border">${field.requirement === "None" ? "🔓 Unlocked" : "🔒 " + field.requirement}</span>
+                                </div>
+                            </div>
+                            <span class="chevron text-gray-400">▼</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mt-3">${field.description}</p>
+                        
+                        <div class="expanded-content mt-4 pt-4 border-t space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-2">💡 Tips & Strategies</h4>
+                                <ul class="space-y-1">
+                                    ${field.tips.map(tip => `<li class="text-sm text-gray-600 flex items-start gap-2"><span class="text-amber-500">•</span>${tip}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-2">👾 Mobs</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${field.mobs.map(mob => `<span class="px-2 py-1 bg-red-50 text-red-700 text-sm rounded-full">${mob}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-2">🐝 Recommended Bees</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    ${field.bees.map(bee => `<span class="px-2 py-1 bg-amber-100 text-amber-800 text-sm rounded-full border border-amber-300">${bee}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleField(el) {
+            el.classList.toggle('expanded');
+            const chevron = el.querySelector('.chevron');
+            chevron.textContent = el.classList.contains('expanded') ? '▲' : '▼';
+        }
+
+        function filterZone(zone) {
+            currentZone = zone;
+            document.querySelectorAll('.zone-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-600');
+            });
+            document.querySelector(`[data-zone="${zone}"]`).classList.remove('bg-white', 'text-gray-600');
+            document.querySelector(`[data-zone="${zone}"]`).classList.add('bg-amber-500', 'text-white');
+            renderFields();
+        }
+
+        renderFields();
+    </script>
+</body>
+</html>
